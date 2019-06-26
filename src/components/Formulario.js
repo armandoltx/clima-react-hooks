@@ -1,9 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 function Formulario() {
 
+  // state del componente
+  // busqueda =state, guardarBusqueda = this.setState({})
+  const [busqueda, guardarBusqueda] = useState({
+    ciudad : '',
+    pais  : ''
+  }) 
+
   const handleChange = (e) => {
-    //Cambiar el state
+    // Cambiar el state antes usabamos this.setState({})
+    guardarBusqueda({
+      ...busqueda, // se hace copia del state para manterner referencia del campo ciudad al cambiar el campo pais
+      [e.target.name] : e.target.value
+    })
+    //  console.log(e);
+    //  console.log(e.target);
+    //  console.log(e.target.name);
+    //  console.log(e.target.value);
+    console.log(busqueda); // antes era console.log(this.state); para ver el state
   }
 
 
