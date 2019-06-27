@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Formulario from './components/Formulario';
 import Error from './components/Error';
-import { id } from 'postcss-selector-parser';
 
 function App() {
 
@@ -11,6 +10,31 @@ function App() {
   const [ ciudad, guardarCiudad ] = useState('');
   const [ pais, guardarPais ] = useState('');
   const [ error, guardarError ] = useState(false);
+  const [ resultado, guardarResultado ] = useState({});
+
+  // ciclo de vida ahora se usa useEffect es igual q componentDidMount, es decir, cuando el componente esta listo se ejecuta, pero tambien toma el de componenetDidUpdate, es decir, cuando haya cambios se ejecuta. Para prvernir la 1 vez, anadimos un if
+  useEffect(() => {
+
+    // prevenir ejecucion
+    if(ciudad === '') return;
+
+    const consultarApi = async () => {
+      // crear url
+      const appId = '409bc547bda57e3ff75d2d7edc6501c4';
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad},${pais}&appid=${appId}`
+
+      // consultar la url
+      const respuesta = await fetch(url);
+      const resultado = await respuesta.json();
+
+      // console.log(resultado);
+      guardarResultado(resultado);
+    }
+
+    consultarApi();
+  },[ ciudad, pais ]);
+  //la parte de [] es un arreglo de dependencias, es q parte del state tiene q estar escuchando para ejecutarse
+  // en este caso queremos que escuche cuando tengamos la ciudad y el pais
 
   const datosConsulta = (datos) => {
     // console.log("datosConsulta");
@@ -27,7 +51,6 @@ function App() {
     guardarPais(datos.pais);
     guardarError(false);
   }
-
 
   // Cargar un componente Condicionalmente
 
