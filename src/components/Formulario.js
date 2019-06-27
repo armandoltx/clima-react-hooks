@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-function Formulario() {
+function Formulario({datosConsulta}) {
 
   // state del componente
   // busqueda =state, guardarBusqueda = this.setState({})
@@ -19,12 +19,21 @@ function Formulario() {
     //  console.log(e.target);
     //  console.log(e.target.name);
     //  console.log(e.target.value);
-    console.log(busqueda); // antes era console.log(this.state); para ver el state
+    // console.log(busqueda); // antes era console.log(this.state); para ver el state
+  }
+
+  const consultarClima = (e) => {
+    // prevenir el comportamiento default y quedarnos en el form
+    e.preventDefault();
+    // pasar hacia el componente principal la busqueda del usuario, el state
+    datosConsulta(busqueda);
   }
 
 
   return(
-    <form>
+    <form
+      onSubmit={consultarClima}
+    >
       <div className="input-field col s12">
         <input
         type="text"
@@ -47,7 +56,7 @@ function Formulario() {
       </div>
 
       <div className="input-field col s12">
-        <input type="submont" className="waver-effect waves-light btn-large btn-block yellow accent-4" value="Buscar Clima" />
+        <input type="submit" className="waver-effect waves-light btn-large btn-block yellow accent-4" value="Buscar Clima" />
       </div>
     </form>
   )
