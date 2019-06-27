@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
 import Formulario from './components/Formulario';
+import Error from './components/Error';
+import { id } from 'postcss-selector-parser';
 
 function App() {
 
@@ -8,6 +10,7 @@ function App() {
   // ciudad = state, guardarCiudad = this.setState()
   const [ ciudad, guardarCiudad ] = useState('');
   const [ pais, guardarPais ] = useState('');
+  const [ error, guardarError ] = useState(false);
 
   const datosConsulta = (datos) => {
     // console.log("datosConsulta");
@@ -15,14 +18,32 @@ function App() {
 
     // Validar que ambor campos esten
     if(datos.ciudad === '' || datos.pais === '') {
-      //error
+      guardarError(true);
       return;
     }
 
     // Ciudad y pais existen, agregarlos al state
     guardarCiudad(datos.ciudad);
     guardarPais(datos.pais);
+    guardarError(false);
   }
+
+
+  // Cargar un componente Condicionalmente
+
+  let componente;
+  if(error) {
+    // hay un error
+    componente = <Error mensaje='Ambos campos son obligatorios' />
+  } else {
+    // mostrar clima
+    componente = null;
+  }
+
+
+
+
+
   return (
     <div className="App">
       <Header titulo="Clima React App con Hooks" />
@@ -34,6 +55,9 @@ function App() {
               <Formulario
                 datosConsulta={datosConsulta} 
               />
+            </div>
+            <div className="col s12 m6">
+              {componente}
             </div>
           </div>
         </div>
